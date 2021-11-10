@@ -42,6 +42,65 @@ def author_details(request, pk):
         return Response()
 
 
+@api_view(["GET", "POST"])
+def genre_list(request):
+    if request.method == "GET":
+        genres = get_genres()
+        return Response(genres, status=status.HTTP_200_OK)
+    if request.method == "POST":
+        serializer = GenreSerializers(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(["GET", "PUT", "DELETE"])
+def genre_details(request, pk):
+    if request.method == "GET":
+        try:
+            genre = Genre.objects.get(pk=pk)
+        except:
+            raise NotFound(f"Genre with {pk} not found")
+        serializer = GenreSerializers(genre, many=False)
+        return Response(serializer.data, status=status)
+
+    if request.method == "PUT":
+        print("PUT", request.data)
+        return Response()
+    if request.method == "DELETE":
+        print("DELETE", request.data)
+        return Response()
+
+
+@api_view(["GET", "POST"])
+def book_list(request):
+    if request.method == "GET":
+        books = get_books()
+        return Response(books, status=status.HTTP_200_OK)
+    if request.method == "POST":
+        serializer = BookSerializers(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(["GET", "PUT", "DELETE"])
+def book_details(request, pk):
+    if request.method == "GET":
+        try:
+            book = Book.objects.get(pk=pk)
+        except:
+            raise NotFound(f"Book with {pk} not found")
+        serializer = BookSerializers(book, many=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    if request.method == "PUT":
+        print("PUT", request.data)
+        return Response()
+    if request.method == "DELETE":
+        print("DELETE", request.data)
+        return Response()
+
+
 """ Klasslar bilan API yozish usuli """
 
 
